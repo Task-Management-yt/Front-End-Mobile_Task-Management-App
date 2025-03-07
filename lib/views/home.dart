@@ -11,6 +11,7 @@ class HomeView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Home'),
         actions: [
           IconButton(
