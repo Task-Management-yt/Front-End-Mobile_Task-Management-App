@@ -4,7 +4,8 @@ import 'package:task_management_app/constant/task.dart';
 import 'package:task_management_app/models/task.dart';
 import 'package:task_management_app/providers/task_provider.dart';
 import 'package:task_management_app/views/components/task_card.dart';
-import 'package:task_management_app/views/welcome.dart';
+import 'package:task_management_app/views/task_view.dart';
+import 'package:task_management_app/views/welcome_view.dart';
 import '../providers/auth_provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -91,10 +92,10 @@ class _HomeViewState extends State<HomeView> {
         floatingActionButton: FloatingActionButton.extended(
           tooltip: "Tambah Tugas",
           onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const AddTaskView()),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const TaskView()),
+            );
           },
           backgroundColor: Colors.black,
           label: const Text(

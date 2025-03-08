@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:task_management_app/models/task.dart';
 import '../constant/api.dart';
 
 final taskEndpoint = ApiEndpoints.tasks;
@@ -11,26 +12,17 @@ class TaskService {
     ),
   );
 
-  Future<Map<String, dynamic>> addTask({
-    required String title,
-    required DateTime deadline,
-    String? description,
-    String? status,
-  }) async {
+  Future<Task> createTask(String token, Task task) async {
     try {
       final response = await _dio.post(
         '/create',
-        data: {
-          "title": title,
-          "description": description,
-          "deadline": deadline.toIso8601String(),
-          "status": status,
-        },
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+        data: task.toJson(),
       );
 
-      return response.data;
+      return Task.fromJson(response.data);
     } on DioException catch (e) {
-      throw Exception(e.response?.data['detail'] ?? 'Terjadi kesalahan');
+      throw Exception(e.response?.data['detail'] ?? 'Gagal menambahkan tugas');
     }
   }
 
@@ -50,6 +42,32 @@ class TaskService {
       throw Exception(
         e.response?.data['detail'] ?? 'Gagal mengambil data tugas',
       );
+    }
+  }
+
+  /// 🔹 Update tugas ke backend
+  Future<Task> updateTask(String token, Task task) async {
+    try {
+      final response = await _dio.put(
+        '/update/${task.id}',
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+        data: task.toJson(),
+      );
+
+      return Task.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Exception(e.response?.data['detail'] ?? 'Gagal memperbarui tugas');
+    }
+  }
+
+  Future<void> deleteTask(String token, Task task) async {
+    try {
+      await _dio.delete(
+        '/delete/${task.id}',
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+      );
+    } on DioException catch (e) {
+      throw Exception(e.response?.data['detail'] ?? 'Gagal memperbarui tugas');
     }
   }
 }

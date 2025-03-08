@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_management_app/constant/task.dart';
 import 'package:task_management_app/models/task.dart';
+import 'package:task_management_app/views/task_view.dart';
 
 class TaskTile extends StatelessWidget {
   final Task task;
@@ -76,8 +77,13 @@ class TaskTile extends StatelessWidget {
                 ),
                 // Ikon edit atau hapus di kanan
                 IconButton(
-                  icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: onEdit, // Aksi edit tugas
+                  icon: const Icon(Icons.edit, color: Colors.black),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => TaskView(task: task)),
+                    );
+                  }, // Aksi edit tugas
                 ),
               ],
             ),

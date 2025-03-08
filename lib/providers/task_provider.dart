@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_management_app/providers/auth_provider.dart';
 import 'package:task_management_app/services/task_service.dart';
-import '../constant/task.dart';
 import '../models/task.dart';
 
 class TaskProvider with ChangeNotifier {
@@ -42,19 +41,47 @@ class TaskProvider with ChangeNotifier {
     }
   }
 
-  void addTask(
-    String title,
-    String description,
-    DateTime deadline,
-    String status,
-  ) {
-    final task = Task(
-      title: title,
-      description: description,
-      deadline: deadline,
-      status: TaskStatus.belumSelesai,
-    );
-    _tasks.add(task);
-    notifyListeners();
+  /// 🔹 Tambah tugas baru ke daftar lokal & backend
+  Future<void> addTask(Task newTask) async {
+    final token = authProvider.token;
+    if (token == null) return;
+
+    try {
+      Task savedTask = await _taskService.createTask(token, newTask);
+      _tasks.add(savedTask);
+      notifyListeners();
+    } catch (e) {
+      debugPrint("Error menambah tugas: $e");
+    }
+  }
+
+  /// 🔹 Update tugas berdasarkan ID
+  Future<void> updateTask(Task updatedTask) async {
+    final token = authProvider.token;
+    if (token == null) return;
+
+    int index = _tasks.indexWhere((task) => task.id == updatedTask.id);
+    if (index == -1) return;
+
+    try {
+      Task savedTask = await _taskService.updateTask(token, updatedTask);
+      _tasks[index] = savedTask;
+      notifyListeners();
+    } catch (e) {
+      debugPrint("Error memperbarui tugas: $e");
+    }
+  }
+
+  Future<void> deleteTask(Task task) async {
+    final token = authProvider.token;
+    if (token == null) return;
+
+    try {
+      await _taskService.deleteTask(token, task);
+      _tasks.removeWhere((t) => t.id == task.id);
+      notifyListeners();
+    } catch (e) {
+      debugPrint("Error menghapus tugas: $e");
+    }
   }
 }

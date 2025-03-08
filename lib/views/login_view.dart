@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app/views/components/text_field.dart';
 import '../providers/auth_provider.dart';
-import 'home.dart';
+import 'home_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app/providers/task_provider.dart';
-import 'package:task_management_app/views/welcome.dart';
-import 'views/home.dart';
+import 'package:task_management_app/views/welcome_view.dart';
+import 'views/home_view.dart';
 import 'providers/auth_provider.dart';
 
 void main() async {

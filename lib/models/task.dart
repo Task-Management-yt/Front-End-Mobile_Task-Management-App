@@ -31,4 +31,13 @@ class Task {
       updatedAt: DateTime.parse(json['updated_at']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'deadline': deadline?.toIso8601String(),
+      'status': status,
+    };
+  }
 }
