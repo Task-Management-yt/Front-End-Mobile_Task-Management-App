@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app/providers/auth_provider.dart';
 import 'package:task_management_app/views/components/text_field.dart';
+import 'package:task_management_app/views/welcome.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RegisterView extends StatefulWidget {
@@ -19,6 +20,7 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -33,7 +35,6 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
-    bool isLoading = false;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -112,16 +113,22 @@ class _RegisterViewState extends State<RegisterView> {
                               isLoading = true;
                             });
 
-                            bool success = await authProvider.signUp(
-                              emailController.text,
-                              passwordController.text,
-                              usernameController.text,
-                              nameController.text,
-                            );
+                            Map<String, dynamic> response = await authProvider
+                                .signUp(
+                                  emailController.text,
+                                  passwordController.text,
+                                  usernameController.text,
+                                  nameController.text,
+                                );
 
-                            if (success) {
+                            if (response['status']) {
+                              setState(() {
+                                isLoading = false;
+                              });
                               showDialog(
+                                // ignore: use_build_context_synchronously
                                 context: context,
+                                barrierDismissible: false,
                                 builder:
                                     (BuildContext context) => AlertDialog(
                                       title: const Text('Register Success'),
@@ -131,35 +138,25 @@ class _RegisterViewState extends State<RegisterView> {
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed:
-                                              () => Navigator.pop(
+                                              () => Navigator.pushReplacement(
                                                 context,
-                                                'Cancel',
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (_) =>
+                                                          const WelcomeView(),
+                                                ),
                                               ),
-                                          child: const Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: const Text('OK'),
+                                          child: const Text('Ok'),
                                         ),
                                       ],
                                     ),
                               );
-                              // Navigator.pushReplacement(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (_) => const HomeView(),
-                              //   ),
-                              // );
                             } else {
                               setState(() {
                                 isLoading = false;
                               });
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Login gagal. Periksa kembali email dan password.',
-                                  ),
-                                ),
+                                SnackBar(content: Text(response['message'])),
                               );
                             }
                           }

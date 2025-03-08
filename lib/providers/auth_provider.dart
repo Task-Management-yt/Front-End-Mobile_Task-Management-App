@@ -25,7 +25,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> signUp(
+  Future<Map<String, dynamic>> signUp(
     String email,
     String password,
     String username,
@@ -38,9 +38,10 @@ class AuthProvider with ChangeNotifier {
         username: username,
         name: name,
       );
-      return true;
+      return {"status": true};
     } catch (e) {
-      return false;
+      List<String> parts = e.toString().split(':');
+      return {"status": false, "message": parts.last.trim()};
     }
   }
 
