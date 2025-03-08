@@ -1,22 +1,22 @@
 class Task {
-  final String id;
-  final String title;
-  final String description;
-  final DateTime deadline;
-  final String status;
-  final String userId;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String? id;
+  final String? title;
+  final String? description;
+  final DateTime? deadline;
+  final String? status;
+  final String? userId;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Task({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.deadline,
-    required this.status,
-    required this.userId,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.title,
+    this.description,
+    this.deadline,
+    this.status,
+    this.userId,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {

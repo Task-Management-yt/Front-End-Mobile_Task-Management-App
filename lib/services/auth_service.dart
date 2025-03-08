@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../api.dart';
+import '../constant/api.dart';
 
 final authEndpoint = ApiEndpoints.auth;
 

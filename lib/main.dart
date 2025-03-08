@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_management_app/providers/task_provider.dart';
 import 'package:task_management_app/views/welcome.dart';
 import 'views/home.dart';
 import 'providers/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final authProvider = AuthProvider();
 
-  runApp(ChangeNotifierProvider(create: (_) => authProvider, child: MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProxyProvider<AuthProvider, TaskProvider>(
+          create:
+              (context) => TaskProvider(
+                Provider.of<AuthProvider>(context, listen: false),
+              ),
+          update:
+              (context, authProvider, previous) => TaskProvider(authProvider),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
