@@ -57,10 +57,11 @@ Pastikan Anda sudah menginstal:
 ```
 Task-Management-App-Flutter/
 │── lib/
+│   │── constants/
 │   │── models/
 │   │── providers/
-│   │── screens/
-│   │── widgets/
+│   │── services/
+│   │── views/
 │   │── main.dart
 │── pubspec.yaml
 │── README.md
