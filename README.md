@@ -2,7 +2,7 @@
 
 ## Deskripsi
 
-Task Management App (Flutter) aplikasi ini berbasis Flutter yang membantu pengguna mengelola tugas mereka dengan mudah. Aplikasi ini memungkinkan pengguna untuk menambah, mengedit, mencari, dan mengkategorikan tugas berdasarkan status. anda bisa mengunduh aplikasi ini di [Github Release]([https://github.com/Task-Management-yt/react-task-management/releases/tag/flutter](https://github.com/Task-Management-yt/Front-End-Mobile_Task-Management-App/releases/tag/flutter)).
+Task Management App (Flutter) aplikasi ini berbasis Flutter yang membantu pengguna mengelola tugas mereka dengan mudah. Aplikasi ini memungkinkan pengguna untuk menambah, mengedit, mencari, dan mengkategorikan tugas berdasarkan status. anda bisa mengunduh aplikasi ini di [Github Release](https://github.com/Task-Management-yt/react-task-management/releases/tag/flutter).
 
 ## Fitur
 
