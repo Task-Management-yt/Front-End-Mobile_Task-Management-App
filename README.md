@@ -1,16 +1,67 @@
-# task_management_app
+# Task Management App (Flutter)
 
-A new Flutter project.
+## Deskripsi
 
-## Getting Started
+Task Management App (Flutter) aplikasi ini berbasis Flutter yang membantu pengguna mengelola tugas mereka dengan mudah. Aplikasi ini memungkinkan pengguna untuk menambah, mengedit, mencari, dan mengkategorikan tugas berdasarkan status. anda bisa mengunduh aplikasi ini di [Github Release](https://github.com/Task-Management-yt/react-task-management/releases/tag/flutter).
 
-This project is a starting point for a Flutter application.
+## Fitur
 
-A few resources to get you started if this is your first Flutter project:
+- **Autentikasi Pengguna**: Login, daftar, dan logout menggunakan Supabase Auth yang diakes melalui backend fast-API.
+- **Manajemen Tugas**:
+  - Membuat tugas baru
+  - Mengedit dan menghapus tugas
+  - Menandai tugas sebagai selesai
+  - Pencarian tugas berdasarkan judul atau deskripsi
+- **Filter Tugas**:
+  - Semua tugas
+  - Tugas belum selesai
+  - Tugas sedang berjalan
+  - Tugas selesai
+- **State Management**: Menggunakan Provider untuk manajemen state.
+- **UI Responsif**: Tampilan modern dan responsif dengan Material Design.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Teknologi yang Digunakan
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Flutter**: Framework utama
+- **Fast API**: Mengelola back-end
+- **Supabase**: Sebagai database
+- **Provider**: State management
+
+## Instalasi dan Menjalankan Aplikasi
+
+### Prasyarat
+
+Pastikan Anda sudah menginstal:
+
+- Flutter SDK
+- Android Studio atau VS Code dengan Flutter Plugin
+
+### Langkah-langkah
+
+1. Clone repository ini:
+   ```bash
+   git clone https://github.com/Task-Management-yt/Front-End-Mobile_Task-Management-App.git
+   cd Front-End-Mobile_Task-Management-App
+   ```
+2. Install dependencies:
+   ```bash
+   flutter pub get
+   ```
+3. Jalankan aplikasi:
+   ```bash
+   flutter run
+   ```
+
+## Struktur Proyek
+
+```
+Task-Management-App-Flutter/
+│── lib/
+│   │── models/
+│   │── providers/
+│   │── screens/
+│   │── widgets/
+│   │── main.dart
+│── pubspec.yaml
+│── README.md
+```
