@@ -23,9 +23,34 @@ class WelcomeView extends StatelessWidget {
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('assets/images/task.jpg'),
-                      fit: BoxFit.contain,
+                      fit: BoxFit.fitHeight,
+                      colorFilter: ColorFilter.mode(
+                        Colors
+                            .transparent, // Ubah warna background menjadi transparan
+                        BlendMode.dstOut, // Menghapus warna dengan blending
+                      ),
                     ),
                   ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
+                        '🚀 Kelola tugasmu dengan mudah,\n💡 Tetap produktif setiap hari!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Flexible(

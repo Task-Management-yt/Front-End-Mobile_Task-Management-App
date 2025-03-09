@@ -4,9 +4,11 @@ import 'package:task_management_app/providers/task_provider.dart';
 import 'package:task_management_app/views/welcome_view.dart';
 import 'views/home_view.dart';
 import 'providers/auth_provider.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones();
 
   runApp(
     MultiProvider(

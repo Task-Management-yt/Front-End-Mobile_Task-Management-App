@@ -16,6 +16,9 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  String searchQuery = "";
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -47,37 +50,79 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(48.0),
-            child: Consumer<TaskProvider>(
-              builder: (context, taskProvider, child) {
-                int semua = taskProvider.tasks.length;
-                int belumSelesai =
-                    taskProvider.tasks
-                        .where((task) => task.status == TaskStatus.belumSelesai)
-                        .length;
-                int sedangBerjalan =
-                    taskProvider.tasks
-                        .where(
-                          (task) => task.status == TaskStatus.sedangBerjalan,
-                        )
-                        .length;
-                int selesai =
-                    taskProvider.tasks
-                        .where((task) => task.status == TaskStatus.selesai)
-                        .length;
+            preferredSize: const Size.fromHeight(100),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (value) {
+                      setState(() {
+                        searchQuery = value.toLowerCase();
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Cari tugas...",
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon:
+                          searchQuery.isNotEmpty
+                              ? IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  _searchController.clear();
+                                  setState(() {
+                                    searchQuery = "";
+                                  });
+                                },
+                              )
+                              : null,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+                Consumer<TaskProvider>(
+                  builder: (context, taskProvider, child) {
+                    List<Task> filteredTasks = _filterTasks(taskProvider.tasks);
 
-                return TabBar(
-                  isScrollable: true,
-                  labelColor: Colors.black,
-                  indicatorColor: Colors.black,
-                  tabs: [
-                    Tab(text: "Semua ($semua)"),
-                    Tab(text: "Belum Selesai ($belumSelesai)"),
-                    Tab(text: "Sedang Berjalan ($sedangBerjalan)"),
-                    Tab(text: "Selesai ($selesai)"),
-                  ],
-                );
-              },
+                    int semua = filteredTasks.length;
+                    int belumSelesai =
+                        filteredTasks
+                            .where(
+                              (task) => task.status == TaskStatus.belumSelesai,
+                            )
+                            .length;
+                    int sedangBerjalan =
+                        filteredTasks
+                            .where(
+                              (task) =>
+                                  task.status == TaskStatus.sedangBerjalan,
+                            )
+                            .length;
+                    int selesai =
+                        filteredTasks
+                            .where((task) => task.status == TaskStatus.selesai)
+                            .length;
+
+                    return TabBar(
+                      isScrollable: true,
+                      labelColor: Colors.black,
+                      indicatorColor: Colors.black,
+                      tabs: [
+                        Tab(text: "Semua ($semua)"),
+                        Tab(text: "Belum Selesai ($belumSelesai)"),
+                        Tab(text: "Sedang Berjalan ($sedangBerjalan)"),
+                        Tab(text: "Selesai ($selesai)"),
+                      ],
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ),
@@ -106,6 +151,15 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
     );
+  }
+
+  /// Fungsi untuk memfilter tugas berdasarkan kata kunci pencarian
+  List<Task> _filterTasks(List<Task> tasks) {
+    if (searchQuery.isEmpty) return tasks;
+    return tasks.where((task) {
+      return task.title!.toLowerCase().contains(searchQuery) ||
+          task.description!.toLowerCase().contains(searchQuery);
+    }).toList();
   }
 
   Widget _buildTaskList(BuildContext context, String filter) {
@@ -141,6 +195,21 @@ class _HomeViewState extends State<HomeView> {
                   filteredTasks.where((task) => task.status == filter).toList();
             }
 
+            // Filter berdasarkan pencarian
+            // filteredTasks =
+            //     filteredTasks
+            //         .where(
+            //           (task) => task.title!.toLowerCase().contains(searchQuery),
+            //         )
+            //         .toList();            // Fitur Pencarian
+            if (searchQuery.isNotEmpty) {
+              filteredTasks =
+                  filteredTasks.where((task) {
+                    return task.title!.toLowerCase().contains(searchQuery) ||
+                        task.description!.toLowerCase().contains(searchQuery);
+                  }).toList();
+            }
+
             if (filteredTasks.isEmpty) {
               return const Center(child: Text("Tidak ada tugas tersedia."));
             }
@@ -154,7 +223,8 @@ class _HomeViewState extends State<HomeView> {
                 return TaskTile(
                   task: task,
                   onTap: () {
-                    debugPrint("Tugas: ${task.title}");
+                    // debugPrint("Tugas: ${task.title}");
+                    _dialogBuilder(context, task);
                   },
                   onEdit: () {
                     debugPrint("Edit tugas: ${task.title}");
@@ -167,4 +237,44 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+}
+
+Future<void> _dialogBuilder(BuildContext context, Task task) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(task.title!),
+        content: Text(
+          'Deskripsi : ${task.description!}\n'
+          'Status    : ${task.status!}\n'
+          'Deadline  : ${task.deadline!}',
+        ),
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('Tutup'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('Edit'),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => TaskView(task: task)),
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
